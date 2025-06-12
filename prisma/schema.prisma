@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Box {
+  id                     BigInt         @id @default(autoincrement())
+  name                   String?
+  ticker                 String?
+  pfp_url                String?
+  sound_url              String?
+  pair_address           String?
+  contract_address       String?
+  conversation_id        String
+  creator_inbox_id       String
+  token_usd_price        Float?
+  token_volume           Float?
+  token_market_cap       Int?
+  token_24h_volume       Float?
+  played_count           BigInt         @default(0)
+  is_suspended           Boolean?       @default(false)
+  created_at             DateTime       @default(now())
+  updated_at             DateTime       @default(now())
+  is_test                Boolean?       @default(false)
+  thumbnail_url          String?
+
+  @@map("boxs")
+}
+
+model BoxPlay {
+  id                  BigInt   @id @default(autoincrement())
+  box_id              BigInt
+  user_ip             String
+  user_wallet_address String?
+  played_at           DateTime @default(now())
+
+  @@map("box_plays")
+}
+
+model BoxEvent {
+  id                      BigInt                   @id @default(autoincrement())
+  status                  BoxEventStatusType       @default(CREATION)
+  conversation_id         String
+  creator_inbox_id        String
+  creator_source          String?
+  creator_wallet_address  String?
+  bot_message             String?
+  box_id                  BigInt?
+  box_ticker              String?
+  box_contract_address    String?
+  box_pfp_url             String?
+  process_id              String
+  process_type            BoxEventProcessType      @default(PLANNED)
+  process_state           BoxEventProcessState     @default(ANALYZING_AUDIO)
+  process_started_at      DateTime?
+  reject_reason           String?
+  is_test                 Boolean?                 @default(false)
+  created_at              DateTime                 @default(now())
+
+  @@map("box_events")
+}
+
+model BotConversation {
+  id                      BigInt                   @id @default(autoincrement())
+  status                  ConversationStatus       @default(RECEIVED)
+  content                 String
+  bot_message             String?
+  authority_id            String
+  content_type            String
+  version_major           Int
+  version_minor           Int
+  conversation_id         String
+  delivery_status         String
+  fallback                String?
+  compression             String?
+  message_id              String
+  kind                    String
+  sender_inbox_id         String
+  sent_at                 DateTime                 @default(now())
+
+  @@map("bot_conversations")
+}
+
+enum ConversationStatus {
+  RECEIVED
+  GENERATED
+  DELIVERED
+}
+
+enum BoxEventProcessType {
+  PLANNED
+  ANALYZED
+  COMPLETED
+  REJECTED
+}
+
+enum BoxEventProcessState {
+  ANALYZING_AUDIO
+  CLASSIFICATING_AUDIO
+  GENERATING_PFP
+  TOKENIZING
+  BOX_CREATED
+  ERROR
+}
+
+enum BoxEventStatusType {
+  CREATION
+  CONVERSATION
+}
