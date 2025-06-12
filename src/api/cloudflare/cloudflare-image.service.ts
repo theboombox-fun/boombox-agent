@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import FormData from 'form-data';
+import * as FormData from 'form-data';
 import { v4 as uuidv4 } from 'uuid';
 import { ApiService } from '../api.service.js';
 import { CloudflareEndpoints } from '../common/api-endpoints.js';

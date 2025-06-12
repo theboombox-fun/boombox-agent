@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import FormData from 'form-data';
+import * as FormData from 'form-data';
 import { ApiService } from '../api.service.js';
 import { ApiHost } from '../common/api-hosts.js';
 import { AnalyzerEndpoints } from '../common/api-endpoints.js';
