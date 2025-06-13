@@ -54,7 +54,7 @@ SENTRY_AUTH_TOKEN=
 
 ```bash
 # git clone repo
-git clone https://github.com/0xberkxyz/boombox-public.git
+git clone https://github.com/theboombox-fun/boombox-agent.git
 # go to the folder
 cd boombox-public
 # install packages
