@@ -17,18 +17,6 @@ export class AIService {
 
     public async generateResponse(payload: string, address: string, history: { role: string, content: string }[]): Promise<GeneratedResponseType | null> {
         try {
-
-            console.log("Request: ", [
-                {
-                    role: "system",
-                    content: basePrompt + checkerPrompt
-                },
-                ...history as any,
-                {
-                    role: "assistant",
-                    content: "Generate response to this message: " + payload
-                }
-            ]);
             const aiTools = await this.agentService.createAITools(address);
             const response = await generateText({
                 model: openaiv2.openai('gpt-4.1'),
@@ -42,7 +30,7 @@ export class AIService {
                     ...history as any,
                     { 
                         role: "assistant",
-                        content: "Generate response to this message: " + payload
+                        content: payload
                     }
                 ],
             });

@@ -71,16 +71,15 @@ export class ConversationService {
 
         entityPayload.bot_message = response.response;
 
-        if (response.event_type == "2") {
+        const conversationEntity = await this.createConversation(entityPayload);
+        
+        if (response.event_type == "2" && response.event_message != "WAITING_DATA") {
             this.xmtpService.sendMessage(conversation, "Creating box...");
+            this.creationMessage(conversation, conversationEntity, response, address);
             return;
         }
-        
-        const conversationEntity = await this.createConversation(entityPayload);
 
         this.xmtpService.sendMessage(conversation, response.response);
-
-        this.creationMessage(conversation, conversationEntity, response, address);
     }
 
     async creationMessage(conversation: Dm | Group | null, conversationEntity: BotConversation, response: GeneratedResponseType, address: string) {

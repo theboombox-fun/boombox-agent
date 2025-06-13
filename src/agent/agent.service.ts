@@ -19,7 +19,7 @@ export class AgentService {
       cdpApiKeySecret: this.AGENTKIT_API_SECRET,
       walletProvider: wallet_provider,
       actionProviders: [
-        createBoxActionProvider()
+        //createBoxActionProvider()
       ],
     });
     const tools = getVercelAITools(agentKit);
