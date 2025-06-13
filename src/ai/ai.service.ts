@@ -33,7 +33,6 @@ export class AIService {
             const response = await generateText({
                 model: openaiv2.openai('gpt-4.1'),
                 tools: { ...aiTools },
-                toolChoice: "auto",
                 system: basePrompt + checkerPrompt,
                 messages: [
                     {
@@ -41,35 +40,12 @@ export class AIService {
                         content: basePrompt + checkerPrompt
                     },
                     ...history as any,
-                    {
+                    { 
                         role: "assistant",
                         content: "Generate response to this message: " + payload
                     }
                 ],
             });
-
-            if (response.toolResults.length > 0) {
-                const result = (response.toolResults[0] as any);
-                if ((response.toolResults[0] as any).toolName === "CreateBoxActionProvider_create-box") {
-                    return {
-                        event_type: result.event_type,
-                        event_message: result.event_message,
-                        response: "Creating box...",
-                        new_box_info: {
-                            sound_url: result.result
-                        }
-                    };
-                } else {
-                    return {
-                        event_type: "1",
-                        event_message: "CONVERSATION",
-                        response: result.result,
-                        new_box_info: {
-                            sound_url: null
-                        }
-                    }
-                }
-            }
 
             const responseText = response.steps[0].text.replaceAll("```json", "").replaceAll("```", "").replaceAll("\n", "");
 
