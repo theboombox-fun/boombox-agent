@@ -7,7 +7,7 @@ export class TokenCron {
         private readonly tokenService: TokenService
     ) { }
 
-    @Cron('*/15 * * * * *')
+    @Cron('*/5 * * * *')
     async handleCron() {
         await this.tokenService.fetchTokenDatas();
     }
